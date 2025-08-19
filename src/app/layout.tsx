@@ -1,6 +1,11 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Sparkles } from "lucide-react";
+import { ThemeProvider } from "@/components/theme-provider";
+import { ThemeToggle } from "@/components/theme-toggle";
+import { ChatProvider } from "@/components/contexts/chat-context";
+import { Toaster } from "@/components/ui/sonner";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -23,11 +28,48 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-hidden`}
       >
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <ChatProvider>
+            <div className="min-h-screen bg-background ">
+              {/* Header */}
+              <header className="border-b bg-card/50 sticky top-0 z-50  ">
+                <div className="container mx-auto px-4 py-3">
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center space-x-3">
+                      <div className="h-8 w-8 rounded-lg  flex items-center justify-center">
+                        <Sparkles className="h-5 w-5 " />
+                      </div>
+                      <div>
+                        <h1 className="text-xl font-bold">
+                          AI Chat Interface
+                        </h1>
+                        <p className="text-sm text-muted-foreground">
+                          Advanced AI playground with customizable parameters
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-4">
+                      <ThemeToggle />
+                    </div>
+                  </div>
+                </div>
+              </header>
+
+              {/* Main Content */}
+              <div>{children}</div>
+              <Toaster />
+            </div>
+          </ChatProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

@@ -1,14 +1,13 @@
 "use client";
-import React, { useEffect, useRef } from "react";
-import { Copy, Download, Send, Loader2, User, Bot, Trash2 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
-import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
-import { ChatMessage, useChat } from "./contexts/chat-context";
+import { Bot, Copy, Download, Loader2, Send, Trash2, User } from "lucide-react";
+import React, { useEffect, useRef } from "react";
 import { toast } from "sonner";
+import { ChatMessage, useChat } from "./contexts/chat-context";
 
 interface ChatBubbleProps {
   message: ChatMessage;
@@ -26,7 +25,7 @@ function ChatBubble({ message, onCopy }: ChatBubbleProps) {
         <div
           className={cn(
             "max-w-[85%] rounded-2xl px-4 py-3 transition-all duration-200",
-            isUser ? "bg-secondary ml-4" : "chat-bubble-ai mr-4"
+            isUser ? "bg-secondary ml-4" : "mr-4"
           )}
         >
           <div className="flex items-start space-x-3">
@@ -195,7 +194,7 @@ export function ChatArea() {
   return (
     <Card className="h-full flex flex-col">
       <CardHeader className="border-b">
-        <div className="flex items-center justify-between">
+        <div className="flex sm:items-center sm:justify-between sm:flex-row flex-col">
           <div>
             <CardTitle className="text-lg">Chat</CardTitle>
             <p className="text-sm text-muted-foreground">
@@ -204,7 +203,7 @@ export function ChatArea() {
                 : "Select a model to start chatting"}
             </p>
           </div>
-          <div className="flex items-center space-x-2">
+          <div className="flex items-center space-x-2 self-end sm:self-auto">
             <Button
               variant="outline"
               size="sm"
@@ -230,8 +229,8 @@ export function ChatArea() {
       </CardHeader>
 
       <CardContent className="flex-1 flex flex-col p-0 ">
-        <ScrollArea className="flex-1 px-4 " ref={scrollAreaRef}>
-          <div className="space-y-4 py-4 max-h-0">
+        <ScrollArea className="flex-1 px-4 xl:min-h-40 sm:min-h-[65vh] min-h-[50vh]" ref={scrollAreaRef}>
+          <div className="space-y-4 py-4 max-h-0 ">
             {messages.length === 0 ? (
               <div className="text-center text-muted-foreground py-12">
                 <Bot className="h-12 w-12 mx-auto mb-4 opacity-50" />
@@ -254,7 +253,7 @@ export function ChatArea() {
 
             {isLoading && (
               <div className="flex justify-start">
-                <div className="chat-bubble-ai mr-4 max-w-[85%]">
+                <div className=" mr-4 max-w-[85%]">
                   <div className="flex items-center space-x-3 mb-2">
                     <div className="flex-shrink-0 w-6 h-6 rounded-full bg-muted text-muted-foreground flex items-center justify-center">
                       <Bot className="h-3 w-3" />

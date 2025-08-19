@@ -1,6 +1,5 @@
 "use client";
-import React from "react";
-import { Check, ChevronDown, Zap } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
@@ -10,12 +9,12 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { Badge } from "@/components/ui/badge";
 import { cn } from "@/lib/utils";
+import { Check, ChevronDown, Loader, Zap } from "lucide-react";
 import { useChat } from "./contexts/chat-context";
 
 export function ModelSelector() {
-  const { models, selectedModel, setSelectedModel } = useChat();
+  const { models, selectedModel, setSelectedModel, modelsStatus } = useChat();
 
   const getProviderColor = (provider: string) => {
     switch (provider.toLowerCase()) {
@@ -36,11 +35,16 @@ export function ModelSelector() {
           <Button
             variant="outline"
             className="w-full justify-between h-auto p-3 transition-all duration-200 hover:shadow-md mt-2"
+            disabled={modelsStatus.isLoading || !!modelsStatus.error}
           >
-            <div className="flex items-center space-x-3">
-              <div className="h-2 w-2 rounded-full bg-gradient-primary"></div>
-              <div className="flex flex-col items-start">
-                <span className="font-medium">
+            <div className="flex items-center justify-between space-x-3">
+              <div className="flex flex-col items-start pl-4">
+                <span
+                  className={cn(
+                    "font-medium",
+                    !selectedModel?.name && "text-muted-foreground"
+                  )}
+                >
                   {selectedModel?.name || "Select Model"}
                 </span>
                 {selectedModel && (
@@ -50,6 +54,7 @@ export function ModelSelector() {
                   </span>
                 )}
               </div>
+              {modelsStatus.isLoading && <Loader className="animate-spin" />}
             </div>
             <ChevronDown className="h-4 w-4 opacity-50" />
           </Button>
@@ -66,33 +71,36 @@ export function ModelSelector() {
               onClick={() => setSelectedModel(model)}
             >
               <div className="flex items-center justify-between w-full">
-                <div className="flex items-center space-x-3">
-                  <div className="flex items-center space-x-2">
-                    <Zap className="h-4 w-4 text-primary" />
+                <div className="flex items-center space-x-3 w-full">
+                  <Zap className="h-4 w-4 text-primary" />
+
+                  <div className="flex items-center w-full justify-between">
+                    <div className="space-y-1">
+                      <div className="flex items-center space-x-2">
+                        <span className="font-medium text-sm">
+                          {model.name}
+                        </span>
+                        <Badge
+                          variant="secondary"
+                          className={cn(
+                            "text-xs px-2 py-0.5",
+                            getProviderColor(model.provider)
+                          )}
+                        >
+                          {model.provider}
+                        </Badge>
+                      </div>
+                      <p className="text-xs text-muted-foreground max-w-xs">
+                        {model.description}
+                      </p>
+                      <div className="flex items-center space-x-4 text-xs text-muted-foreground">
+                        <span>{model.maxTokens.toLocaleString()} tokens</span>
+                        <span>${model.costPer1k}/1K</span>
+                      </div>
+                    </div>
                     {selectedModel?.id === model.id && (
                       <Check className="h-4 w-4 text-primary" />
                     )}
-                  </div>
-                  <div className="space-y-1">
-                    <div className="flex items-center space-x-2">
-                      <span className="font-medium text-sm">{model.name}</span>
-                      <Badge
-                        variant="secondary"
-                        className={cn(
-                          "text-xs px-2 py-0.5",
-                          getProviderColor(model.provider)
-                        )}
-                      >
-                        {model.provider}
-                      </Badge>
-                    </div>
-                    <p className="text-xs text-muted-foreground max-w-xs">
-                      {model.description}
-                    </p>
-                    <div className="flex items-center space-x-4 text-xs text-muted-foreground">
-                      <span>{model.maxTokens.toLocaleString()} tokens</span>
-                      <span>${model.costPer1k}/1K</span>
-                    </div>
                   </div>
                 </div>
               </div>
@@ -100,6 +108,11 @@ export function ModelSelector() {
           ))}
         </DropdownMenuContent>
       </DropdownMenu>
+      {modelsStatus.error && (
+        <div className="text-xs text-destructive pl-2 ">
+          {modelsStatus.error}
+        </div>
+      )}
     </div>
   );
 }

@@ -30,7 +30,7 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased overflow-hidden`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         <ThemeProvider
           attribute="class"
@@ -41,8 +41,8 @@ export default function RootLayout({
           <ChatProvider>
             <div className="min-h-screen bg-background ">
               {/* Header */}
-              <header className="border-b bg-card/50 sticky top-0 z-50  ">
-                <div className="container mx-auto px-4 py-3">
+              <header className="border-b bg-card sticky top-0 z-50 h-20 ">
+                <div className=" px-4 py-3">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center space-x-3">
                       <div className="h-8 w-8 rounded-lg  flex items-center justify-center">
@@ -52,7 +52,7 @@ export default function RootLayout({
                         <h1 className="text-xl font-bold">
                           AI Chat Interface
                         </h1>
-                        <p className="text-sm text-muted-foreground">
+                        <p className="sm:text-sm text-xs text-muted-foreground">
                           Advanced AI playground with customizable parameters
                         </p>
                       </div>
@@ -65,7 +65,7 @@ export default function RootLayout({
               </header>
 
               {/* Main Content */}
-              <div>{children}</div>
+              <div className="xl:h-[calc(100vh-80px)]">{children}</div>
               <Toaster />
             </div>
           </ChatProvider>

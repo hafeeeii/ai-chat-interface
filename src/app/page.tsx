@@ -7,11 +7,11 @@ import { Separator } from "@/components/ui/separator";
 
 export default function Home() {
   return (
-    <div className="container  px-4 py-6">
-      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-[calc(100vh-120px)]">
+    <div className=" px-4 py-6 h-full">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-6 h-full">
         {/* Left Sidebar - Controls */}
-        <Card className="lg:col-span-1 ">
-          <CardContent className=" space-y-6 ">
+        <Card className="xl:col-span-1 col-span-4 ">
+          <CardContent className=" space-y-6 h-full flex flex-col">
             <ModelSelector />
             <Separator />
             <PromptEditor />
@@ -19,12 +19,12 @@ export default function Home() {
         </Card>
 
         {/* Main Chat Area */}
-        <div className="lg:col-span-2">
+        <div className="xl:col-span-2 col-span-4">
           <ChatArea />{" "}
         </div>
 
         {/* Right Sidebar - Parameters */}
-        <div className="lg:col-span-1">
+        <div className="xl:col-span-1 col-span-4">
           <ParametersPanel />{" "}
         </div>
       </div>

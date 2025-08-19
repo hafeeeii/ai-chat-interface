@@ -1,8 +1,6 @@
 "use client";
-import React, { useState } from "react";
-import { Save, FileText, Trash2, Plus, Upload } from "lucide-react";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { Textarea } from "@/components/ui/textarea";
 import {
   Card,
   CardContent,
@@ -10,7 +8,6 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
 import {
   Dialog,
   DialogContent,
@@ -30,8 +27,11 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { PromptTemplate, useChat } from "./contexts/chat-context";
+import { Textarea } from "@/components/ui/textarea";
+import { FileText, Loader, Save, Trash2, Upload } from "lucide-react";
+import { useState } from "react";
 import { toast } from "sonner";
+import { PromptTemplate, useChat } from "./contexts/chat-context";
 
 export function PromptEditor() {
   const {
@@ -42,6 +42,7 @@ export function PromptEditor() {
     setSelectedTemplate,
     saveTemplate,
     deleteTemplate,
+    templatesStatus,
   } = useChat();
 
   const [isTemplateDialogOpen, setIsTemplateDialogOpen] = useState(false);
@@ -101,10 +102,10 @@ export function PromptEditor() {
   };
 
   return (
-    <Card className=" flex flex-col h-full">
+    <Card className=" flex flex-col h-full ">
       <CardHeader className="space-y-4">
         <div className="flex items-center justify-between flex-col gap-4">
-          <div className="text-nowrap flex flex-col self-start">
+          <div className="text-wrap flex flex-col self-start">
             <CardTitle className="text-lg">Prompt Editor</CardTitle>
             <CardDescription>
               {selectedTemplate
@@ -112,11 +113,21 @@ export function PromptEditor() {
                 : "Write your prompt or load a template"}
             </CardDescription>
           </div>
-          <div className="flex items-center space-x-2 self-end">
+          <div className="flex items-center space-x-2 self-end" >
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
-                <Button variant="outline" size="sm">
-                  <FileText className="h-4 w-4 mr-2" />
+                <Button
+                  variant="outline"
+                  size="sm"
+                  disabled={
+                    templatesStatus.isLoading || !!templatesStatus.error
+                  }
+                >
+                  {templatesStatus.isLoading ? (
+                    <Loader className="animate-spin" />
+                  ) : (
+                    <FileText className="h-4 w-4 mr-2" />
+                  )}
                   Templates
                 </Button>
               </DropdownMenuTrigger>
@@ -256,15 +267,20 @@ export function PromptEditor() {
             </Dialog>
           </div>
         </div>
+        {templatesStatus.error && (
+          <div className="text-xs text-destructive pl-2 -mt-3 ">
+            {templatesStatus.error}
+          </div>
+        )}
       </CardHeader>
 
-      <CardContent className="flex-1 flex flex-col">
-        <div className="flex-1">
+      <CardContent className="flex-1 flex flex-col max-h-full ">
+        <div>
           <Textarea
             value={currentPrompt}
             onChange={(e) => setCurrentPrompt(e.target.value)}
             placeholder="Enter your prompt here... You can use placeholders like {topic}, {style}, {length} in your templates."
-            className="min-h-[200px]  max-h-[210px]  resize-none text-sm leading-relaxed"
+            className="min-h-56  max-h-56 h-full  resize-none text-sm leading-relaxed py-2"
           />
         </div>
 

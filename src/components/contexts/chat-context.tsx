@@ -23,7 +23,6 @@ export interface ChatMessage {
   content: string;
   timestamp: Date;
   model?: string;
-  tokens?: number;
 }
 
 export interface PromptTemplate {

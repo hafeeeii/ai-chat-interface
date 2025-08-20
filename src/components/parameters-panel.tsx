@@ -1,13 +1,5 @@
 'use client'
-import React from "react";
-import {
-  Thermometer,
-  Hash,
-  Gauge,
-  MinusCircle,
-  PlusCircle,
-  RotateCcw,
-} from "lucide-react";
+import { Button } from "@/components/ui/button/button";
 import {
   Card,
   CardContent,
@@ -16,11 +8,18 @@ import {
   CardTitle,
 } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
-import { Button } from "@/components/ui/button";
 import { Label } from "@/components/ui/label";
 import { Separator } from "@/components/ui/separator";
+import {
+  Gauge,
+  Hash,
+  MinusCircle,
+  RotateCcw,
+  Thermometer
+} from "lucide-react";
+import React from "react";
 import { useChat } from "./contexts/chat-context";
-import { Slider } from "./ui/slider";
+import { Slider } from "./ui/slider/slider";
 
 interface ParameterSliderProps {
   label: string;

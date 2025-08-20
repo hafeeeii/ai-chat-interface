@@ -1,11 +1,24 @@
 "use client";
 
 import { Moon, Sun } from "lucide-react";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button/button";
 import { useTheme } from "next-themes";
+import { cn } from "@/lib/utils";
+import { useEffect, useState } from "react";
 
 export function ThemeToggle() {
   const { theme, setTheme } = useTheme();
+
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    // prevent mismatch between SSR and client
+    return null;
+  }
 
   return (
     <Button
@@ -17,14 +30,20 @@ export function ThemeToggle() {
     >
       <div className="relative flex items-center justify-center">
         <Sun
-          className={`h-4 w-4 transition-all duration-300 ${
-            theme === "dark" ? "rotate-90 scale-0" : "rotate-0 scale-100"
-          }`}
+          className={cn(
+            "h-4 w-4 transform transition-transform duration-300",
+            theme === "dark"
+              ? "rotate-90 scale-0 opacity-0"
+              : "rotate-0 scale-100 opacity-100"
+          )}
         />
         <Moon
-          className={`absolute h-4 w-4 transition-all duration-300 ${
-            theme === "dark" ? "rotate-0 scale-100" : "-rotate-90 scale-0"
-          }`}
+          className={cn(
+            "absolute h-4 w-4 transform transition-transform duration-300",
+            theme === "dark"
+              ? "rotate-0 scale-100 opacity-100"
+              : "-rotate-90 scale-0 opacity-0"
+          )}
         />
       </div>
       <span className="sr-only">Toggle theme</span>

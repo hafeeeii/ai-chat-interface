@@ -1,5 +1,5 @@
 "use client";
-import { Button } from "@/components/ui/button";
+import { Button } from "@/components/ui/button/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
@@ -24,7 +24,7 @@ function ChatBubble({ message, onCopy }: ChatBubbleProps) {
       >
         <div
           className={cn(
-            "max-w-[85%] rounded-2xl px-4 py-3 transition-all duration-200",
+            "max-w-[85%] rounded-2xl px-4 py-3 transition-all duration-200 ",
             isUser ? "bg-secondary ml-4" : "mr-4"
           )}
         >
@@ -62,7 +62,7 @@ function ChatBubble({ message, onCopy }: ChatBubbleProps) {
               </div>
 
               <div
-                className={cn("text-sm leading-relaxed whitespace-pre-wrap")}
+                className={cn("text-sm leading-relaxed whitespace-pre-wrap break-all")}
               >
                 {message.content}
               </div>
@@ -136,7 +136,6 @@ export function ChatArea() {
         role: "assistant",
         content: randomResponse,
         model: selectedModel.name,
-        tokens: Math.floor(Math.random() * 500) + 100, // Mock token count
       });
 
       setIsLoading(false);
@@ -162,7 +161,6 @@ export function ChatArea() {
         content: msg.content,
         timestamp: msg.timestamp.toISOString(),
         model: msg.model,
-        tokens: msg.tokens,
       })),
     };
 

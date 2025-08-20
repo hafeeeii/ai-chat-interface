@@ -1,36 +1,109 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# AI Chat Interface
 
-## Getting Started
+A frontend prototype of an AI chat interface built with Next.js 14, TypeScript, TailwindCSS, and OpenAI API. This project implements core features inspired by leading AI platforms, focusing on usability, responsiveness, and accessibility.
 
-First, run the development server:
+---
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## 1. Research
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+### Platforms Reviewed & Chosen Features
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+I reviewed three major AI interfaces to identify compelling design patterns and user experience principles:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+#### a. Hugging Face Spaces  
+Hugging Face Spaces is a directory of AI-powered applications hosted by the community. While it does not provide a single unified interface, many individual Spaces (such as HuggingChat) feature **chat-style interactions** with message alignment, parameter controls, and dark mode. The platform emphasizes **discoverability** through curated categories and trending apps, making it easy for users to explore diverse AI capabilities.
 
-## Learn More
+#### b. Anthropic Claude UI  
+Anthropic Claude offers a clean, focused chat interface with a **collapsible sidebar** for navigation and chat history. It includes a **model selector** (e.g., Claude Sonnet 4), **persistent conversations**, and **personalized greetings**. The layout prioritizes clarity and workflow, with a minimalist design that reduces cognitive load.
 
-To learn more about Next.js, take a look at the following resources:
+#### c. Microsoft Copilot Lab  
+Microsoft Copilot Lab provides a **sidebar-based interface** with access to past conversations and quick-start templates. The main area includes a **prompt input** with **quick-response buttons** (e.g., “Write a first draft”, “Design a logo”) and a **dark theme**. This approach encourages productivity by offering immediate guidance and reducing typing effort.
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+### Chosen Features (6)
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+Based on research, I implemented the following features:
 
-## Deploy on Vercel
+1. **Model Selector** – Dropdown to choose between GPT models  
+2. **Prompt Editor** – Text area with save/load template functionality  
+3. **Parameters Panel** – Controls for temperature and max tokens  
+4. **Chat Output Area** – Displays conversation with copy/download actions  
+5. **Theme Toggle** – Light/dark mode with system preference detection  
+6. **Responsive Layout** – Mobile-first design with collapsible sidebar  
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+These features balance simplicity and control, enabling both casual and advanced users.
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## 2. Design
+
+### Figma Mockup
+
+🔗 [Figma mockup link](https://www.figma.com/design/PrsKyrFZ2NSvg2ftBr4VdG/ai-chat-interface?node-id=0-1&t=yTQ8zliujvombmUw-1)  
+
+
+
+###  Code Implementation Notes
+
+- **Model Selector**: Implemented with `DropdownMenu` from shadcn/ui.
+- **Prompt Editor**: Uses `Textarea` with save/load buttons; templates are stored in component state.
+- **Parameters Panel**: `Slider` for temperature, `Input` for max tokens etc.
+- **Theme Toggle**: Uses `Toggle` component with `useTheme()` hook; persists preference via `localStorage`.
+- **Copy/Download**: Buttons trigger clipboard write and JSON download of chat history.
+
+All components follow shadcn/ui patterns for consistency and accessibility.
+
+---
+
+## 3. Development
+
+### a. Model Selector
+
+- Uses `DropdownMenu` to select between models.
+- Fetching available models from API.
+
+### b. Prompt Editor
+
+- `Textarea` with placeholder and min-height.
+- Save button stores current prompt in state.
+- Template load buttons inject predefined prompts (e.g., "Summarize this text").
+
+
+### c. Chat Output Area
+
+- Messages rendered as `ChatBubble` components..
+- Copy button: copies message text to clipboard.
+- Download button: exports full chat as JSON file.
+
+### d. Accessibility & UX
+
+- Full keyboard navigation (Tab, Enter, Esc).
+- ARIA labels and roles via shadcn components.
+- Focus rings visible.
+- Loading state shown during AI response.
+- Error handling: error messages if API fails.
+
+### e. Component Library & Storybook
+
+- Built with `shadcn/ui` for consistent, accessible components.
+- Storybook configured for:
+  - `Button`
+  - `Badge`
+  - `Dialog`
+  - `Slider`
+- Run with `npx storybook dev`
+
+---
+
+## What to Submit
+
+1. ✅ **Live URL**: [https://ai-chat-interface-mauve.vercel.app/](https://ai-chat-interface-mauve.vercel.app/)  
+2. ✅ **GitHub Repository**: [https://github.com/hafeeeii/ai-chat-interface](https://github.com/hafeeeii/ai-chat-interface)  
+3. ✅ **Figma Mockup Link**: [https://www.figma.com/design/PrsKyrFZ2NSvg2ftBr4VdG/ai-chat-interface?node-id=0-1&t=yTQ8zliujvombmUw-1](https://www.figma.com/design/PrsKyrFZ2NSvg2ftBr4VdG/ai-chat-interface?node-id=0-1&t=yTQ8zliujvombmUw-1)  
+
+---
+
+## Limitations
+
+- Chat history not persisted.
+- No authentication or user accounts.
+- Newly created templates are not saved permanently.
